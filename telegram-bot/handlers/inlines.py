@@ -13,7 +13,7 @@ from const import (
     success_add_url
 )
 from loader import dp, APIClient
-from info import draw_graphic
+from info import draw_graphic, export_history
 
 from keyboards import (
     cancell,  
@@ -137,7 +137,7 @@ async def history_export(query: CallbackQuery) -> None:
         history = await APIClient.get_history(url = id, id = query.from_user.id)
            
         file = BufferedInputFile(
-            file = await draw_graphic(list(history.values())),
+            file = await export_history(list(history.values())),
             filename = "result.xlsx"
         )
         await query.message.answer_document(document = file)
