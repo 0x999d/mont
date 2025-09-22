@@ -96,6 +96,57 @@ nano telegram-bot/const/message.py # Ответы бота
 docker compose up -d --build
 ```
 
+---
+
+## Схема базы данных
+
+### `users`
+
+```markdown
+| Поле     | Тип     | Ключи                       |
+|----------|---------|-----------------------------|
+| username | String  | Primary Key                 |
+| password | String  | Not Null                    |
+```
+
+---
+
+### `trackedurls`
+
+```markdown
+| Поле     | Тип     | Ключи                                                       |
+|----------|---------|-------------------------------------------------------------|
+| id       | Integer | Primary Key, Auto Increment                                 |
+| interval | Integer | Not Null                                                    |
+| url      | String  | Not Null                                                    |
+| owner    | String  | Foreign Key → `users.username`, Not Null, On Delete CASCADE |
+```
+
+---
+
+### `trackhistory`
+
+```markdown
+| Поле          | Тип      | Ключи                                                           |
+|---------------|----------|-----------------------------------------------------------------|
+| id            | Integer  | Primary Key, Auto Increment                                     |
+| latency       | Float    | Nullable                                                        |
+| http_status   | Integer  | Nullable                                                        |
+| is_ok         | Boolean  | Not Null, Default = True                                        |
+| hash_reqbytes | String   | Nullable                                                        |
+| date          | DateTime | Not Null, Default = `datetime.now`                              |
+| site_id       | Integer  | Foreign Key → `trackedurls.id`, Not Null, On Delete CASCADE     |
+```
+
+---
+
+### Связи
+
+```markdown
+- `users.username` ← `trackedurls.owner` — один ко многим
+- `trackedurls.id` ← `trackhistory.site_id` — один ко многим
+```
+
 ## 📡 API методы
 
 Все методы, кроме регистрации и логина, требуют заголовок:
