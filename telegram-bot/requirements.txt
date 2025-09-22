@@ -1,0 +1,9 @@
+pycryptodome
+aiogram==3.22.0
+python-dotenv
+sqlalchemy
+loguru
+python-jose
+aiosqlite
+openpyxl
+pillow

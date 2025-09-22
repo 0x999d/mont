@@ -1,0 +1,9 @@
+python-dotenv
+sqlalchemy
+loguru
+python-jose
+aiosqlite
+fastapi
+uvicorn
+passlib
+aiohttp
